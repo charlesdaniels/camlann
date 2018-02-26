@@ -17,6 +17,6 @@ void camlann_log(char*);
 void camlann_fixme(char*);
 void camlann_verbose(char*);
 void camlann_init();
-void set_camlann_flag_verbose(Uint8);
+void set_camlann_flag_verbose(int);
 
 #endif /* CAMLANN_UTIL_H */

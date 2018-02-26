@@ -16,6 +16,7 @@
 	* [How Accurate is Camlann?](#how-accurate-is-camlann)
 	* [Is Camlann Sensitive to How I My Components in SOPCBuilder/Qsys?](#is-camlann-sensitive-to-how-i-my-components-in-sopcbuilderqsys)
 	* [Is Camlann Compatible With Pointer Arithmetic That Interacts With The NIOSII Adress Space?](#is-camlann-compatible-with-pointer-arithmetic-that-interacts-with-the-niosii-adress-space)
+	* [When I Attempt to Compile for the NIOSII I Get `underfined reference to main()`](#when-i-attempt-to-compile-for-the-niosii-i-get-underfined-reference-to-main)
 	* [Why "Camlann"?](#why-camlann)
 * [Roadmap](#roadmap)
 	* [Near-Term](#near-term)
@@ -153,6 +154,19 @@ a time.  PIOs are supported by using `NAME_BASE` as a subscript into a
 state-holding array. In short, if your code depends on accessing the NIOSII
 address map directly, you are not in for a fun time.
 
+## When I Attempt to Compile for the NIOSII I Get `underfined reference to main()`
+
+You did not add `calmann/` to your NIOSII project. In eclipse, you can right
+click the folder and add it to your NIOSII build. In BASH, you can use this
+incantation to generate a new `Makefile`:
+
+```
+nios2-app-generate-makefile --src-dir ./ --bsp-dir ../the_bsp_dir --elf-name binary.elf  --src-dir ./camlann/
+```
+
+This assumes you are `cd` -ed to the top-level directory of your NIOSII
+software.
+
 ## Why "Camlann"?
 
 In Arthurian legend, King Arthur perished at the [Battle of
@@ -173,9 +187,6 @@ and later actually implemented.
 the character buffer.
 * The HEX displays and LEDR/LEDG are only supported in that you can read the
   hexadecimal values sent to their PIOs by running your binary with `-v`.
-* Camlann uses SDL's fixed-width integer types. It should probably use
-  `<stdint.h>` instead.
-	* This should probably also be used for `camlann_types.h` also.
 
 ## Long-Term
 
@@ -194,6 +205,13 @@ the buttons/switches to be operated in "real time".
 	  `camlann_video_character_buffer_with_dma.h`.
 	* Partial implementation of `altera_avalon_pio_regs.h` via
 	  `camlann_pio_regs.h`.
+* 0.0.2-ALPHA
+	* Fixed use of SDL's fixed-width integer types, which prevented
+	  compiling projects for the DE2.
+	* Fixed varies name collisions which prevented compiling projects for
+	  the DE2.
+	* For better correctness, `calmann_types.h` now uses `stdint.h` to
+	  provide fixed-width integer types.
 
 
 # Disclaimer

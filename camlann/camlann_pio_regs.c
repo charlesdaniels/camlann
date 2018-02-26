@@ -1,7 +1,9 @@
 #include "camlann_pio_regs.h"
 
+#ifdef USE_CAMLANN
 /* evil global state variable to maintain PIO state */
-Uint32* camlann_pio_state;
+uint32_t* camlann_pio_state;
+
 
 /**
  * @brief On the board, this would read from a physical PIO. In Camlann, it
@@ -44,7 +46,9 @@ void IOWR_ALTERA_AVALON_PIO_DATA(alt_u32 base, alt_u32 val) {
  * @brief This gets called from camlann_init and sets up camlann_pio_state.
  */
 void camlann_pio_init() {
-	camlann_pio_state = (Uint32*) malloc(sizeof(Uint32) * CAMLANN_MAX_PIOS);
+	camlann_pio_state = (uint32_t*) \
+		malloc(sizeof(uint32_t) * CAMLANN_MAX_PIOS);
+
 	if (camlann_pio_state == NULL) {
 		perror("Failed to allocate memory for camlann_pio_state.");
 		exit(1);
@@ -54,3 +58,12 @@ void camlann_pio_init() {
 		camlann_pio_state[i] = 0;
 	}
 }
+
+#else
+
+// dummy implementation for when we are not using Camlann
+void camlann_pio_init() {
+	// do nothing
+}
+
+#endif

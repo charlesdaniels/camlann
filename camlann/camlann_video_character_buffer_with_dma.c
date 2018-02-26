@@ -4,6 +4,7 @@
  * @author Charles Daniels
  */
 
+#ifdef USE_CAMLANN
 
 #include "camlann_video_character_buffer_with_dma.h"
 
@@ -60,3 +61,4 @@ void alt_up_char_buffer_string(alt_u32 base,
 	camlann_log(msg);
 }
 
+#endif

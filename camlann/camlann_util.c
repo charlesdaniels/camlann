@@ -7,7 +7,7 @@
 
 #include "camlann_util.h"
 
-Uint8 camlann_flag_verbose;
+int camlann_flag_verbose;
 
 /**
  * @brief Log a message somewhere.
@@ -51,10 +51,10 @@ void camlann_verbose(char* msg) {
 }
 
 /**
- * @brief To avoid a global/extern, use this function to set the verboes flag.
+ * @brief To avoid a global/extern, use this function to set the verbose flag.
  *
  * @param val
  */
-void set_camlann_flag_verbose(Uint8 val){
+void set_camlann_flag_verbose(int val){
 	camlann_flag_verbose = val;
 }

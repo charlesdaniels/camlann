@@ -9,6 +9,7 @@
 
 int main(int argc, char* argv[]) {
 
+	#ifdef USE_CAMLANN
 	char c;
 	char* end;
 	char* keystate_str;
@@ -79,6 +80,8 @@ int main(int argc, char* argv[]) {
 	/* initialize PIOs to desired states */
 	IOWR_ALTERA_AVALON_PIO_DATA(KEYS_BASE, keystate);
 	IOWR_ALTERA_AVALON_PIO_DATA(SWITCHES_BASE, swstate);
+	#endif
 
-	USER_MAIN();
+	return USER_MAIN();
+
 }

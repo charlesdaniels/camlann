@@ -7,6 +7,8 @@
 
 #include "camlann_video_pixel_buffer_dma.h"
 
+#ifdef USE_CAMLANN
+
 /* Horrible, evil global variables required because we can't expect the
  * caller t omaintain them for us. */
 SDL_Surface* camlann_sdl_screen;
@@ -115,3 +117,5 @@ void alt_up_pixel_buffer_dma_draw(alt_u32 base,
 	}
 
 }
+
+#endif

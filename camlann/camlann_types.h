@@ -1,13 +1,17 @@
 #ifndef ALT_TYPES_H
 #define ALT_TYPES_H
 
-typedef signed char  alt_8;
-typedef unsigned char  alt_u8;
-typedef signed short alt_16;
-typedef unsigned short alt_u16;
-typedef signed long alt_32;
-typedef unsigned long alt_u32;
-typedef long long alt_64;
-typedef unsigned long long alt_u64;
+#ifdef USE_CAMLANN
+#include <stdint.h>
 
-#endif
+typedef   int8_t     alt_8;
+typedef   uint8_t    alt_u8;
+typedef   int16_t    alt_16;
+typedef   uint16_t   alt_u16;
+typedef   int32_t    alt_32;
+typedef   uint32_t   alt_u32;
+typedef   int64_t    alt_64;
+typedef   uint64_t   alt_u64;
+
+#endif /* USE_CAMLANN */
+#endif /* ALT_TYPES_H */
