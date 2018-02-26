@@ -17,11 +17,15 @@
 	* [Is Camlann Sensitive to How I My Components in SOPCBuilder/Qsys?](#is-camlann-sensitive-to-how-i-my-components-in-sopcbuilderqsys)
 	* [Is Camlann Compatible With Pointer Arithmetic That Interacts With The NIOSII Adress Space?](#is-camlann-compatible-with-pointer-arithmetic-that-interacts-with-the-niosii-adress-space)
 	* [When I Attempt to Compile for the NIOSII I Get `underfined reference to main()`](#when-i-attempt-to-compile-for-the-niosii-i-get-underfined-reference-to-main)
+	* [Will it Work on macOS?](#will-it-work-on-macos)
+	* [Will it Work on Windows?](#will-it-work-on-windows)
+	* [Will it Work on ArchLinux/Fedora/Debian/Slackware/etc?](#will-it-work-on-archlinuxfedoradebianslackwareetc)
 	* [Why "Camlann"?](#why-camlann)
 * [Roadmap](#roadmap)
 	* [Near-Term](#near-term)
 	* [Long-Term](#long-term)
 * [Version History](#version-history)
+* [Contributing](#contributing)
 * [Disclaimer](#disclaimer)
 
 <!-- vim-markdown-toc -->
@@ -167,6 +171,33 @@ nios2-app-generate-makefile --src-dir ./ --bsp-dir ../the_bsp_dir --elf-name bin
 This assumes you are `cd` -ed to the top-level directory of your NIOSII
 software.
 
+## Will it Work on macOS?
+
+Probably, if you have a working SDL installation and the right headers.  macOS
+is not officially supported, but if you get it to work, please open a pull
+request or issue with details on what steps you had to take so they can be
+added to this document.
+
+## Will it Work on Windows?
+
+Maybe. You need a working `make`, `gcc`, as well as SDL. You might be able to
+get it to work using Cygwin or WSL, but I don't use Windows so I cannot test
+this.
+
+As with macOS, Windows is not officially supported, but if changes can be made
+that do not consume significant development time or break compatibility with
+Linux, I will accept pull requests. If you do get it to work on Windows, please
+open an issue or pull request so any special steps can be added to this
+document.
+
+## Will it Work on ArchLinux/Fedora/Debian/Slackware/etc?
+
+Probably. Only Ubuntu 16.04 is officially supported, but broad compatibility
+and portability is a goal. If you have any notes regarding using Camlann with a
+Linux distro other than Ubuntu (or with BSD/Solaris), please open a pull
+request or an issue so details can be added here.
+
+
 ## Why "Camlann"?
 
 In Arthurian legend, King Arthur perished at the [Battle of
@@ -213,6 +244,13 @@ the buttons/switches to be operated in "real time".
 	* For better correctness, `calmann_types.h` now uses `stdint.h` to
 	  provide fixed-width integer types.
 
+# Contributing
+
+If you have comments, suggestions, or find a problem, please open a GitHub
+issue.
+
+If you would like to contribute code, pull requests are welcome - again please
+use GitHub.
 
 # Disclaimer
 
