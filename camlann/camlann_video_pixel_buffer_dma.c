@@ -10,11 +10,18 @@
 #ifdef USE_CAMLANN
 
 /* Horrible, evil global variables required because we can't expect the
- * caller to maintain them for us. */
+ * caller to maintain them for us.
+ *
+ * TODO; should move these and camlann video backend to it's own file, since
+ * some stuff from here interacts with things from the character buffer code.
+ */
 SDL_Renderer* camlann_sdl_renderer;
 SDL_Window*   camlann_sdl_window;
 SDL_Event     camlann_sdl_event;
 SDL_Texture*  camlann_sdl_texture;
+SDL_Texture*  camlann_sdl_text_texture;
+SDL_Surface*  camlann_sdl_text_surface;
+TTF_Font*     camlann_sdl_font;
 int           camlann_last_row = 0;
 Uint64        camlann_last_update;
 
