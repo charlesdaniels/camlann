@@ -3,7 +3,6 @@ os: linux
 script:
     - "make -f camlann_CI.mk clean"
     - "make -f camlann_CI.mk"
-    - "./check_style.sh"
 addons:
     apt:
         packages:
