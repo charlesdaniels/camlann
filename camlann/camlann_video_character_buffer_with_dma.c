@@ -15,7 +15,7 @@
  *
  * @return
  */
-alt_up_char_buffer_dev alt_up_char_buffer_open_dev(alt_u32 base) {
+alt_up_char_buffer_dev alt_up_char_buffer_open_dev(alt_u32* base) {
 	char* msg;
 
 	msg = (char*) malloc(1204 * sizeof(char));
@@ -24,7 +24,9 @@ alt_up_char_buffer_dev alt_up_char_buffer_open_dev(alt_u32 base) {
 		base);
 
 	camlann_log(msg);
-	return 1;
+
+	/* this does nothing, but makes GCC and the wrapped code happy */
+	return 0;
 }
 
 

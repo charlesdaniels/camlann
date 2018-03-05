@@ -59,20 +59,12 @@ int main(int argc, char* argv[]) {
 
 	if (set_keystate) {
 		keystate = strtol(keystate_str, &end, 10);
-		if (keystate == NULL) {
-			perror("Value provided for -k is invalid.\n");
-			exit(1);
-		}
 	} else {
 		keystate = 7;
 	}
 
 	if (set_swstate) {
 		swstate = strtol(swstate_str, &end, 10);
-		if (keystate == NULL) {
-			perror("Value provided for -s is invalid.\n");
-			exit(1);
-		}
 	} else {
 		swstate = 0;
 	}
@@ -84,6 +76,8 @@ int main(int argc, char* argv[]) {
 
 	printf("FPS: %f INTERVAL: %f ms\n", CAMLANN_TARGET_FPS, CAMLANN_RENDER_INTERVAL);
 
+	#ifndef CAMLANN_CI
 	return USER_MAIN();
+	#endif
 
 }

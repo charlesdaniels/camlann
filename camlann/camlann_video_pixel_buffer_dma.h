@@ -17,7 +17,7 @@
 /* typedef alt_u32 alt_up_pixel_buffer_dma_dev; */
 #define alt_up_pixel_buffer_dma_dev alt_u32
 
-alt_up_pixel_buffer_dma_dev alt_up_pixel_buffer_dma_open_dev(alt_u32);
+alt_up_pixel_buffer_dma_dev alt_up_pixel_buffer_dma_open_dev(char*);
 void alt_up_pixel_buffer_dma_clear_screen (alt_u32, alt_u32);
 void alt_up_pixel_buffer_dma_draw(alt_u32, alt_u32, alt_u32, alt_u32);
 

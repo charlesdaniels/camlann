@@ -1,0 +1,5 @@
+install: make
+language: c
+script:
+    - make -f camlann_CI.mk clean
+    - make -f camlann_CI.mk

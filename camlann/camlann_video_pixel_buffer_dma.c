@@ -103,7 +103,7 @@ void camlann_init_video() {
 		camlann_log("Failed to initialize SDL.\n");
 		exit(1);
 	}
-	
+
 	/* create SDL window for Camlann */
 	camlann_sdl_window = SDL_CreateWindow("Camlann VGA Framebuffer",
 					      SDL_WINDOWPOS_UNDEFINED,
@@ -118,7 +118,7 @@ void camlann_init_video() {
 						  SDL_RENDERER_ACCELERATED  |
 						  SDL_RENDERER_PRESENTVSYNC |
 						  SDL_RENDERER_TARGETTEXTURE);
-	
+
 	/* And a texture to draw into the renderer with */
 	camlann_sdl_texture = SDL_CreateTexture(camlann_sdl_renderer,
 						SDL_PIXELFORMAT_RGBA8888,
@@ -140,13 +140,25 @@ void camlann_init_video() {
 
 }
 
-alt_up_pixel_buffer_dma_dev alt_up_pixel_buffer_dma_open_dev(alt_u32 base) {
+alt_up_pixel_buffer_dma_dev alt_up_pixel_buffer_dma_open_dev(char* base) {
 	camlann_init_video();
-	return 1;
+
+	char* msg = (char*) malloc(1024 * sizeof(char));
+	sprintf(msg, "Initialized screen (@base: %x)\n", base);
+	camlann_fixme(msg);
+	free(msg);
+
+	/* this does nothing, but makes the wrapped code and also GCC happy */
+	return 0;
 }
 
 void alt_up_pixel_buffer_dma_clear_screen (alt_u32 base, alt_u32 foo) {
-	camlann_fixme("Ignored request to clear screen.\n");
+	char* msg = (char*) malloc(1024 * sizeof(char));
+	sprintf(msg, "Ignored request to clear screen (@base: %x, ?%x)\n",
+		base,
+		foo);
+	camlann_fixme(msg);
+	free(msg);
 }
 
 /**
@@ -172,6 +184,11 @@ void alt_up_pixel_buffer_dma_draw(alt_u32 base,
 	r = color >> 16;
 	g = color >> 8;
 	b = color;
+
+	#ifdef CAMLANN_CI
+	/* prevent -Wextra from yelling at us for an unused parameter */
+	printf("%x", base);
+	#endif
 
 	camlann_setpixel(col, row, r, g, b);
 	camlann_flip_screen(row);

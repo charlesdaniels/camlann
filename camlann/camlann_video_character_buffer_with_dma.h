@@ -14,7 +14,7 @@
 #include "camlann.h"
 #include "camlann_util.h"
 
-alt_up_char_buffer_dev alt_up_char_buffer_open_dev(alt_u32);
+alt_up_char_buffer_dev alt_up_char_buffer_open_dev(alt_u32*);
 void alt_up_char_buffer_clear();
 void alt_up_char_buffer_string(alt_u32, char*, alt_u32, alt_u32);
 
