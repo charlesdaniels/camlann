@@ -14,7 +14,7 @@
 	* [How Can I Check If My Code is Compiling Under Camlann?](#how-can-i-check-if-my-code-is-compiling-under-camlann)
 	* [Can I Call Camlann APIs or State Variables Directly?](#can-i-call-camlann-apis-or-state-variables-directly)
 	* [How Accurate is Camlann?](#how-accurate-is-camlann)
-	* [Is Camlann Sensitive to How I My Components in SOPCBuilder/Qsys?](#is-camlann-sensitive-to-how-i-my-components-in-sopcbuilderqsys)
+	* [Is Camlann Sensitive to How I Name My Components in SOPCBuilder/Qsys?](#is-camlann-sensitive-to-how-i-name-my-components-in-sopcbuilderqsys)
 	* [Is Camlann Compatible With Pointer Arithmetic That Interacts With The NIOSII Adress Space?](#is-camlann-compatible-with-pointer-arithmetic-that-interacts-with-the-niosii-adress-space)
 	* [When I Attempt to Compile for the NIOSII I Get `underfined reference to main()`](#when-i-attempt-to-compile-for-the-niosii-i-get-underfined-reference-to-main)
 	* [Will it Work on macOS?](#will-it-work-on-macos)
@@ -146,7 +146,7 @@ calls do nothing and simply return 0 or 1. Many functions are not implemented
 at all. Code that works in Camlann is not guaranteed to work on an actual
 NIOSII or vice-versa.
 
-## Is Camlann Sensitive to How I My Components in SOPCBuilder/Qsys?
+## Is Camlann Sensitive to How I Name My Components in SOPCBuilder/Qsys?
 
 Yes, very.
 

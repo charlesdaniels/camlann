@@ -47,17 +47,6 @@ void camlann_setpixel(int x,
 		      Uint8 g,
 		      Uint8 b) {
 
-	/* SDL_LockSurface(screen); */
-	/* Uint32 *pixmem32; */
-	/* Uint32 colour; */
-	/*  */
-	/* colour = SDL_MapRGB( screen->format, r, g, b ); */
-	/*  */
-	/* pixmem32 = (Uint32*) screen->pixels  + */
-	/*            (y * camlann_sdl_surface->pitch/4) + x; */
-	/* *pixmem32 = colour; */
-	/* SDL_UnlockSurface(screen); */
-
 	SDL_SetRenderDrawColor(camlann_sdl_renderer, r, g, b, 255);
 	SDL_RenderDrawPoint(camlann_sdl_renderer, x, y);
 
