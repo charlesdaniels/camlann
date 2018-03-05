@@ -1,5 +1,5 @@
-install: make
-language: python
+language: c
+os: linux
 script:
     - "make -f camlann_CI.mk clean"
     - "make -f camlann_CI.mk"
