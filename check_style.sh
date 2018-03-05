@@ -9,7 +9,7 @@ CHECKPATCH_URL='https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.g
 if [ ! -x "$(which checkpatch.pl)" ] ; then
 	CHECKPATCH="/tmp/checkpatch.pl"
 	wget -O "$CHECKPATCH" "$CHECKPATCH_URL"
-	chmod +x "$CHECKAPTCH"
+	chmod +x "$CHECKPATCH"
 else
 	CHECKPATCH="$(which checkpatch.pl)"
 fi
