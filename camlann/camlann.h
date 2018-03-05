@@ -3,9 +3,19 @@
 
 
 ////////10////////20////////30// CONFIGURATION /50////////60////////70////////80
+
+#define US_PER_SECOND 1000000.0
+#define MS_PER_SECOND 1000
+#define US_PER_MS 1000
+
 #define USER_MAIN user_main
 #define CAMLANN_VIDEO_HEIGHT 240
 #define CAMLANN_VIDEO_WIDTH  320
+#define CAMLANN_TARGET_FPS 60.0
+#define CAMLANN_RENDER_INTERVAL ((1.0 / CAMLANN_TARGET_FPS) * MS_PER_SECOND)
+/* poll the clock every this many rows, possibly implying a redraw */
+#define CAMLANN_CLOCK_ROWS 1
+
 
 
 ////////10////////20////////30// COMPATIBILITY /50////////60////////70////////80

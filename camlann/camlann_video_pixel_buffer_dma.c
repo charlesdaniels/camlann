@@ -10,66 +10,145 @@
 #ifdef USE_CAMLANN
 
 /* Horrible, evil global variables required because we can't expect the
- * caller t omaintain them for us. */
-SDL_Surface* camlann_sdl_screen;
-SDL_Event    camlann_sdl_event;
-int          camlann_last_row = 0;
+ * caller to maintain them for us. */
+SDL_Renderer* camlann_sdl_renderer;
+SDL_Window*   camlann_sdl_window;
+SDL_Event     camlann_sdl_event;
+SDL_Texture*  camlann_sdl_texture;
+int           camlann_last_row = 0;
+Uint64        camlann_last_update;
+
+/**
+ * @brief Retrieve current system time in ms.
+ *
+ * @return
+ */
+Uint64 camlann_get_timestamp() {
+	struct timeval now;
+	gettimeofday(&now, NULL);
+	Uint64 timestamp = now.tv_sec * MS_PER_SECOND + \
+			   now.tv_usec / US_PER_MS;
+	return timestamp;
+}
 
 /**
  * @brief Camlann internal function to render a single pixel on the SDL window.
  *
- * @param screen SDL surface. This will be camlann_sdl_screen.
+ * @param screen SDL surface. This will be camlann_sdl_surface.
  * @param x horizontal pixel coordinate
  * @param y vertical pixel coordiante
  * @param r red channel
  * @param g green channel
  * @param b blue channel
  */
-void camlann_setpixel(SDL_Surface* screen,
-		      int x,
+void camlann_setpixel(int x,
 		      int y,
 		      Uint8 r,
 		      Uint8 g,
 		      Uint8 b) {
 
-	Uint32 *pixmem32;
-	Uint32 colour;
+	/* SDL_LockSurface(screen); */
+	/* Uint32 *pixmem32; */
+	/* Uint32 colour; */
+	/*  */
+	/* colour = SDL_MapRGB( screen->format, r, g, b ); */
+	/*  */
+	/* pixmem32 = (Uint32*) screen->pixels  + */
+	/*            (y * camlann_sdl_surface->pitch/4) + x; */
+	/* *pixmem32 = colour; */
+	/* SDL_UnlockSurface(screen); */
 
-	colour = SDL_MapRGB( screen->format, r, g, b );
+	SDL_SetRenderDrawColor(camlann_sdl_renderer, r, g, b, 255);
+	SDL_RenderDrawPoint(camlann_sdl_renderer, x, y);
 
-	pixmem32 = (Uint32*) screen->pixels  +
-		   (y * camlann_sdl_screen->pitch/4) + x;
-	*pixmem32 = colour;
 }
 
 /**
  * @brief Flip the screen if needed.
  *
- * Specifically, the screen is only flipped if we have just finished
- * drawing a row. This is a performance optimization, an accurate
- * implementation where every pixel is drawn immediately cases roughly two
- * orders of magnitude slowdown compared to this implementation.
+ * If at least 1 /
  *
  * @param row The row number in which the most recent pixel was rendered.
  */
 inline void camlann_flip_screen(int row) {
-	if (camlann_last_row != row ) {
-		if (SDL_MUSTLOCK(camlann_sdl_screen)) {
-			SDL_UnlockSurface(camlann_sdl_screen);
+	/* we only poll the clock every CAMLANN_CLOCK_ROWs many rows */
+	if (((camlann_last_row - row) > CAMLANN_CLOCK_ROWS) |
+	   ((camlann_last_row - row)  < - CAMLANN_CLOCK_ROWS)) {
+
+		Uint64 now = camlann_get_timestamp();
+
+		/* check if it's time to render a new frame */
+		if ((now - camlann_last_update) > CAMLANN_RENDER_INTERVAL) {
+
+			/* detach the renderer from the texture */
+			SDL_SetRenderTarget(camlann_sdl_renderer, NULL);
+
+			/* copy texture into the renderer for display */
+			SDL_RenderCopyEx(camlann_sdl_renderer,
+					 camlann_sdl_texture,
+					 NULL,
+					 NULL,
+					 0,
+					 NULL,
+					 SDL_FLIP_NONE);
+
+			/* display contents copied from the texture */
+			SDL_RenderPresent(camlann_sdl_renderer);
+
+			/* re-attach the renderer to the texture */
+			SDL_SetRenderTarget(camlann_sdl_renderer,
+					    camlann_sdl_texture);
+
+			/* bookkeeping */
+			camlann_last_row = row;
+			camlann_last_update = now;
 		}
-		SDL_Flip(camlann_sdl_screen);
-		camlann_last_row = row;
 	}
 }
 
 /**
- * @brief initialize camlann_sdl_screen.
+ * @brief initialize camlann_sdl_surface.
  */
 void camlann_init_video() {
-	camlann_sdl_screen = SDL_SetVideoMode(CAMLANN_VIDEO_WIDTH,
+	if ( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
+		camlann_log("Failed to initialize SDL.\n");
+		exit(1);
+	}
+	
+	/* create SDL window for Camlann */
+	camlann_sdl_window = SDL_CreateWindow("Camlann VGA Framebuffer",
+					      SDL_WINDOWPOS_UNDEFINED,
+					      SDL_WINDOWPOS_UNDEFINED,
+					      CAMLANN_VIDEO_WIDTH,
 					      CAMLANN_VIDEO_HEIGHT,
-					      0,
-					      SDL_HWSURFACE);
+					      SDL_WINDOW_SHOWN );
+
+	/* And a renderer to draw into it */
+	camlann_sdl_renderer = SDL_CreateRenderer(camlann_sdl_window,
+						  -1,
+						  SDL_RENDERER_ACCELERATED  |
+						  SDL_RENDERER_PRESENTVSYNC |
+						  SDL_RENDERER_TARGETTEXTURE);
+	
+	/* And a texture to draw into the renderer with */
+	camlann_sdl_texture = SDL_CreateTexture(camlann_sdl_renderer,
+						SDL_PIXELFORMAT_RGBA8888,
+						SDL_TEXTUREACCESS_TARGET,
+						CAMLANN_VIDEO_WIDTH,
+						CAMLANN_VIDEO_HEIGHT);
+
+	if (camlann_sdl_window == NULL) {
+		camlann_log("Failed to create SDL window.\n");
+		exit(1);
+	}
+
+	SDL_SetRenderTarget(camlann_sdl_renderer, camlann_sdl_texture);
+
+	/* clean up everything */
+	camlann_last_update = camlann_get_timestamp();
+	camlann_last_row = 0;
+	SDL_RenderClear(camlann_sdl_renderer);
+
 }
 
 alt_up_pixel_buffer_dma_dev alt_up_pixel_buffer_dma_open_dev(alt_u32 base) {
@@ -105,7 +184,7 @@ void alt_up_pixel_buffer_dma_draw(alt_u32 base,
 	g = color >> 8;
 	b = color;
 
-	camlann_setpixel(camlann_sdl_screen, col, row, r, g, b);
+	camlann_setpixel(col, row, r, g, b);
 	camlann_flip_screen(row);
 
 	// if the window is closed / quit, tell SDL to allow it to quit

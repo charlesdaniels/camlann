@@ -1,5 +1,5 @@
 CC=gcc
-SDL_FLAGS=$(shell sdl-config --libs)
+SDL_FLAGS=$(shell sdl2-config --libs)
 CFLAGS= -std=c99 -fno-builtin -O0 -DUSE_CAMLANN
 CLINK=-lm $(SDL_FLAGS)
 

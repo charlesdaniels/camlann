@@ -243,6 +243,9 @@ the buttons/switches to be operated in "real time".
 	  the DE2.
 	* For better correctness, `calmann_types.h` now uses `stdint.h` to
 	  provide fixed-width integer types.
+* 0.0.3-ALPHA
+	* Re-wrote Camlann rendering code to use SDL2.
+		* Camlann now runs at a fixed framerate.
 
 # Contributing
 
