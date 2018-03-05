@@ -8,8 +8,6 @@
 
 #include "camlann_video_character_buffer_with_dma.h"
 
-TTF_Font *camlann_font;
-
 /**
  * @brief Provides compatibility with the Altera BSP, but does nothing.
  *
@@ -18,7 +16,15 @@ TTF_Font *camlann_font;
  * @return
  */
 alt_up_char_buffer_dev alt_up_char_buffer_open_dev(alt_u32 base) {
-	camlann_init_char();
+	char* msg;
+
+	msg = (char*) malloc(1204 * sizeof(char));
+	sprintf(msg,
+		"Ignored request to open char buffer device at %x\n",
+		base);
+
+	camlann_log(msg);
+	return 1;
 }
 
 
@@ -46,33 +52,13 @@ void alt_up_char_buffer_string(alt_u32 base,
 			       char* text,
 			       alt_u32 col,
 			       alt_u32 row) {
-	/* char* msg; */
-        /*  */
-	/* msg = (char*) malloc(1204 * sizeof(char)); */
-	/* sprintf(msg, */
-	/*         "request to render text '%s' at %i, %i via device at %x\n", */
-	/*         text, col, row, base); */
-	/* camlann_log(msg); */
-	SDL_Surface *text_surface;
-	SDL_Color text_color = {255, 255, 255};
-	text_surface = TTF_RenderText_Solid(camlann_font, text, text_color);
-	camlann_blit_surface(text_surface);
-}
+	char* msg;
 
-void camlann_init_char() {
-	camlann_log("Initializing character buffer\n");
-	if (TTF_Init() != 0) {
-		camlann_log("Failed to initalize TTF.\n");
-		exit(1);
-	}
-
-	camlann_font = TTF_OpenFont("FreeSans.ttf", 24);
-	if (camlann_font == NULL) {
-		camlann_log("Failed to open FreeSans.ttf\n");
-		exit(1);
-	}
-
+	msg = (char*) malloc(1204 * sizeof(char));
+	sprintf(msg,
+		"request to render text '%s' at %i, %i via device at %x\n",
+		text, col, row, base);
+	camlann_log(msg);
 }
 
 #endif
-

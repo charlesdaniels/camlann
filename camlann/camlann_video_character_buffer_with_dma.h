@@ -13,8 +13,6 @@
 
 #include "camlann.h"
 #include "camlann_util.h"
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
 
 alt_up_char_buffer_dev alt_up_char_buffer_open_dev(alt_u32);
 void alt_up_char_buffer_clear();

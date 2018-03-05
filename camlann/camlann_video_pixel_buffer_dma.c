@@ -70,8 +70,6 @@ void camlann_init_video() {
 					      CAMLANN_VIDEO_HEIGHT,
 					      0,
 					      SDL_HWSURFACE);
-
-	SDL_WM_SetCaption("Camlann", "Camlann");
 }
 
 alt_up_pixel_buffer_dma_dev alt_up_pixel_buffer_dma_open_dev(alt_u32 base) {
@@ -117,18 +115,6 @@ void alt_up_pixel_buffer_dma_draw(alt_u32 base,
 				exit(0);
 		}
 	}
-
-}
-
-/**
- * @brief Blit an SDL surface to the main Camlann display window.
- *
- * @param surf
- */
-void camlann_blit_surface(SDL_Surface* surf) {
-	// TODO: check for error conditions
-	SDL_BlitSurface(surf, NULL, camlann_sdl_screen, NULL);
-	SDL_Flip(camlann_sdl_screen);
 
 }
 
