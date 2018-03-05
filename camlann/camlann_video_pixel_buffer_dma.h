@@ -12,6 +12,7 @@
 #include "camlann.h"
 #include <stdio.h>
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 
 /* typedef alt_u32 alt_up_pixel_buffer_dma_dev; */
 #define alt_up_pixel_buffer_dma_dev alt_u32
@@ -23,6 +24,7 @@ void alt_up_pixel_buffer_dma_draw(alt_u32, alt_u32, alt_u32, alt_u32);
 void camlann_setpixel(SDL_Surface*, int, int, Uint8, Uint8, Uint8);
 void camlann_flip_screen(int);
 void camlann_init_video();
+void camlann_blit_surface(SDL_Surface*);
 
 #endif /* USE_CAMLANN */
 #endif
