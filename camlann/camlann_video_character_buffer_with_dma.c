@@ -20,10 +20,14 @@ alt_up_char_buffer_dev alt_up_char_buffer_open_dev(alt_u32* base) {
 
 	msg = (char*) malloc(1204 * sizeof(char));
 	sprintf(msg,
-		"Ignored request to open char buffer device at %x\n",
+		"Request to open char buffer device at %x\n",
 		base);
+	camlann_verbose(msg);
+	free(msg);
 
-	camlann_log(msg);
+	TTF_Init();
+
+	camlann_sdl_font = TTF_OpenFont("arial.ttf", 25);
 
 	/* this does nothing, but makes GCC and the wrapped code happy */
 	return 0;
@@ -61,6 +65,17 @@ void alt_up_char_buffer_string(alt_u32 base,
 		"request to render text '%s' at %i, %i via device at %x\n",
 		text, col, row, base);
 	camlann_log(msg);
+	SDL_Color color = {255, 255, 255};
+	camlann_sdl_text_surface = TTF_RenderText_Solid(camlann_sdl_font,
+							text,
+							color);
+
+	camlann_sdl_text_texture = \
+		SDL_CreateTextureFromSurface(camlann_sdl_renderer,
+					     camlann_sdl_text_surface);
+	SDL_RenderCopy(camlann_sdl_renderer, camlann_sdl_text_texture, NULL, NULL);
+	SDL_RenderPresent(camlann_sdl_renderer);
+
 }
 
 #endif

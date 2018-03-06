@@ -30,6 +30,8 @@ fi
 
 CAMLANN_DIR="$INSTALL_PATH/camlann"
 CAMLANN_MK="$INSTALL_PATH/camlann.mk"
+FONT_NAME="LiberationMono-Regular.ttf"
+FONT_DEST="$INSTALL_PATH/$FONT_NAME"
 
 PROMPT_CHOICE_FLAG="NO"
 if [ -e "$CAMLANN_DIR" ] ; then
@@ -60,10 +62,14 @@ fi
 if [ -e "$CAMLANN_DIR" ] ; then
 	rm -r "$CAMLANN_DIR"
 fi
+if [ -e "$FONT_DEST" ] ; then
+	rm "$FONT_DEST"
+fi
 
 echo "Installing Camlann files... "
 cp -r "$SOURCE_PATH/camlann/" "$CAMLANN_DIR"
 cp "$SOURCE_PATH/camlann.mk" "$CAMLANN_MK"
+cp "$SOURCE_PATH/$FONT_NAME" "$FONT_DEST"
 
 echo "Generating objects list... "
 OBJECT_LIST="$(ls "$INSTALL_PATH"/*.c | while read -r cfile ; do basename "$cfile" | sed 's/.c$/.o/g' ; done | tr '\n' ' ')"
