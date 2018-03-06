@@ -63,8 +63,6 @@ void alt_up_char_buffer_string(alt_u32 base,
 			       alt_u32 col,
 			       alt_u32 row) {
 	char* msg;
-	int text_width;
-	int text_height;
 
 	row = row * CAMLANN_PIXELS_PER_ROW;
 	col = col * CAMLANN_PIXELS_PER_COL;
@@ -75,28 +73,7 @@ void alt_up_char_buffer_string(alt_u32 base,
 		text, col, row, base);
 	camlann_verbose(msg);
 
-	SDL_Color color = {255, 255, 255, 0};
-	camlann_sdl_text_surface = TTF_RenderText_Solid(camlann_sdl_font,
-							text,
-							color);
-
-	camlann_sdl_text_texture = \
-		SDL_CreateTextureFromSurface(camlann_sdl_renderer,
-					     camlann_sdl_text_surface);
-
-	SDL_QueryTexture(camlann_sdl_text_texture,
-			 NULL,
-			 NULL,
-			 &text_width,
-			 &text_height);
-	SDL_Rect text_region = { col, row, text_width, text_height };
-
-	SDL_RenderCopy(camlann_sdl_renderer,
-		       camlann_sdl_text_texture,
-		       NULL,
-		       &text_region);
-	SDL_RenderPresent(camlann_sdl_renderer);
-
+	camlann_display_text(col, row, text);
 }
 
 #endif

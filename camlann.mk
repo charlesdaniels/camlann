@@ -5,7 +5,7 @@ CFLAGS= -std=c99 -fno-builtin -O0 -DUSE_CAMLANN $(SDL_FLAGS)
 CLINK=-lm $(SDL_LIBS) -lSDL2_ttf
 
 CAMLANN_PREFIX=./camlann/
-CAMLANN_OBJECTS=camlann_video_character_buffer_with_dma.o camlann_video_pixel_buffer_dma.o camlann_pio_regs.o camlann_main.o camlann_util.o
+CAMLANN_OBJECTS=camlann_video_character_buffer_with_dma.o camlann_video_pixel_buffer_dma.o camlann_pio_regs.o camlann_main.o camlann_util.o camlann_video_backend.o
 NIOS2_OBJECTS=##NIOS2OBJECTS##
 BINARY_NAME=camlann_bin
 

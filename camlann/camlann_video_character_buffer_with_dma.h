@@ -13,6 +13,7 @@
 
 #include "camlann.h"
 #include "camlann_util.h"
+#include "camlann_video_backend.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
