@@ -12,6 +12,8 @@
 	* [My Code Does Not Compile After I Add a New C File](#my-code-does-not-compile-after-i-add-a-new-c-file)
 	* [Camlann is Missing a Function from the BSP My Code Uses](#camlann-is-missing-a-function-from-the-bsp-my-code-uses)
 	* [How Can I Check If My Code is Compiling Under Camlann?](#how-can-i-check-if-my-code-is-compiling-under-camlann)
+	* [Is the VGA famebuffer (`video_pixel_buffer_dma`) Supported?](#is-the-vga-famebuffer-video_pixel_buffer_dma-supported)
+	* [Is the Character Buffer (`video_character_buffer_with_dma` Supported?](#is-the-character-buffer-video_character_buffer_with_dma-supported)
 	* [Can I Call Camlann APIs or State Variables Directly?](#can-i-call-camlann-apis-or-state-variables-directly)
 	* [How Accurate is Camlann?](#how-accurate-is-camlann)
 	* [Is Camlann Sensitive to How I Name My Components in SOPCBuilder/Qsys?](#is-camlann-sensitive-to-how-i-name-my-components-in-sopcbuilderqsys)
@@ -130,9 +132,37 @@ update it manually or re-run `install.sh`.
 
 Please report an issue on the Camlann GitHub page.
 
+In the interim, you may wish to modify your C code like this:
+
+```c
+#ifndef USE_CAMLANN
+the_missing_function();
+#endif
+```
+
+This will cause the function call to not be compiled into the binary when
+using Camlann.
+
 ## How Can I Check If My Code is Compiling Under Camlann?
 
 Use `ifdef USE_CAMLANN`, this is the same preprocessor Camlann itself uses.
+
+## Is the VGA famebuffer (`video_pixel_buffer_dma`) Supported?
+
+Yes, but only pixel drawing is supported. Explicit screen clearing and
+shape drawing has not been implemented.
+
+## Is the Character Buffer (`video_character_buffer_with_dma` Supported?
+
+Yes, but it may not be accurate. The font will definitely be different, and
+character positioning may appear off. In particular, horizontal alignment may
+be incorrect, so fancy ASCII art may appear garbled. This is because the Altera
+character buffer is effectively a 2d grid of characters to be overlaid on the
+screen, while Camlann simply draws text directly over top of the emulated VGA
+framebuffer with no awareness of the relative position of any other text.
+
+In the future, this might be fixed by emulating the character buffer using a
+2d `char` array, and redrawing this every frame.
 
 ## Can I Call Camlann APIs or State Variables Directly?
 
@@ -213,9 +243,6 @@ as Avalon is the name of the island on which Camelot was said to have stood.
 * Shape-drawing commands from `altera_up_avalon_video_pixel_buffer_dma.h` are
   not implemented at all. Eventually they will be wrapped with `FIXME` stubs,
 and later actually implemented.
-* The character buffer/overlay is not implemented at all, messages are sent
-  only to standard out. In the future, we will use SDL text drawing to emulate
-the character buffer.
 * The HEX displays and LEDR/LEDG are only supported in that you can read the
   hexadecimal values sent to their PIOs by running your binary with `-v`.
 
@@ -246,6 +273,12 @@ the buttons/switches to be operated in "real time".
 * 0.0.3-ALPHA
 	* Re-wrote Camlann rendering code to use SDL2.
 		* Camlann now runs at a fixed framerate.
+	* Camlann now supports using integer numbers of SDL2 texture pixels
+	  per framebuffer pixel. This allows the DE2 application.
+	* Camlann now supports much of the NIOSII Character Buffer API.
+		* Character positioning may not be completely accurate compared
+		  to the real character buffer, but is usually "close enough".
+		* Clearing the character overlay is not supported.
 
 # Contributing
 
@@ -266,3 +299,7 @@ resources).
 
 This project is also not affiliated in any way with Altera Cooperation, or it's
 recent buyer Intel.
+
+As a convenience, the Liberation Mono, Regular font is distributed with
+the source code for this project. This font is owned by RedHat corporation
+and is made available under the SIL Open Font license.

@@ -95,6 +95,8 @@ inline void camlann_flip_screen(int row) {
 			SDL_SetRenderTarget(camlann_sdl_renderer,
 					    camlann_sdl_texture);
 
+			SDL_Delay(CAMLANN_REDRAW_SLEEP);
+
 			/* bookkeeping */
 			camlann_last_row = row;
 			camlann_last_update = now;
@@ -188,6 +190,7 @@ void alt_up_pixel_buffer_dma_draw(alt_u32 base,
 				  alt_u32 col,
 				  alt_u32 row) {
 	int r, g, b;
+	Uint32 col_render, row_render;
 	r = color >> 16;
 	g = color >> 8;
 	b = color;
@@ -197,7 +200,35 @@ void alt_up_pixel_buffer_dma_draw(alt_u32 base,
 	printf("%x", base);
 	#endif
 
-	camlann_setpixel(col, row, r, g, b);
+	/* this mess allows us to render multiple pixels per pixel which is
+	 * sent to this function - by default 2 pixels per pixel */
+	for (col_render =  (col * CAMLANN_VGA_SCALE) + CAMLANN_VGA_BUFFER_COL ;
+	     col_render <= (col * CAMLANN_VGA_SCALE) + CAMLANN_VGA_BUFFER_COL +
+			   CAMLANN_VGA_SCALE ;
+	     col_render ++) {
+
+		for (row_render =  (row * CAMLANN_VGA_SCALE) +
+				   CAMLANN_VGA_BUFFER_ROW ;
+		     row_render <= (row * CAMLANN_VGA_SCALE) +
+				   CAMLANN_VGA_BUFFER_ROW +
+				   CAMLANN_VGA_SCALE ;
+		     row_render ++) {
+
+			/* make sure we don't to outside of the VGA buffer
+			 * drawing area */
+			if (row_render >  CAMLANN_VGA_BUFFER_ROW +
+					 (CAMLANN_VGA_BUFFER_HEIGHT *
+					  CAMLANN_VGA_SCALE)) {
+				continue;
+			}
+			if (col_render >  CAMLANN_VGA_BUFFER_COL +
+					 (CAMLANN_VGA_BUFFER_WIDTH *
+					  CAMLANN_VGA_SCALE)) {
+				continue;
+			}
+			camlann_setpixel(col_render, row_render, r, g, b);
+		}
+	}
 	camlann_flip_screen(row);
 
 	// if the window is closed / quit, tell SDL to allow it to quit

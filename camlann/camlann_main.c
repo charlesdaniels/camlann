@@ -74,8 +74,6 @@ int main(int argc, char* argv[]) {
 	IOWR_ALTERA_AVALON_PIO_DATA(SWITCHES_BASE, swstate);
 	#endif
 
-	printf("FPS: %f INTERVAL: %f ms\n", CAMLANN_TARGET_FPS, CAMLANN_RENDER_INTERVAL);
-
 	#ifndef CAMLANN_CI
 	return USER_MAIN();
 	#endif
